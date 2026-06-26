@@ -1,5 +1,5 @@
--- Admin Hub v1.0
--- Script Menu Completo para Roblox
+-- Admin Hub v1.0 Modificado
+-- Script Menu Completo para Roblox (Fly & Ícone RPG Removidos)
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -31,14 +31,11 @@ local function LoadSettings()
             menuSize = 1,
             iconSize = 1,
             menuBorder = false,
-            iconBorder = false,
             menuBorderColors = {{255,0,0},{255,127,0},{255,255,0},{0,255,0},{0,0,255},{75,0,130},{148,0,211}},
-            iconBorderColors = {{255,0,0},{255,127,0},{255,255,0},{0,255,0},{0,0,255},{75,0,130},{148,0,211}},
             speed = {enabled = false, value = 16},
             jump = {enabled = false, value = 50},
             infiniteJump = false,
             noclip = false,
-            fly = false,
             esp = false,
             loopTeleport = {enabled = false, target = ""},
         }
@@ -56,7 +53,6 @@ end
 LoadSettings()
 
 -- ==================== CRIAÇÃO DA GUI ====================
--- Remover GUI existente
 if game.CoreGui:FindFirstChild("AdminHub") then
     game.CoreGui:FindFirstChild("AdminHub"):Destroy()
 end
@@ -88,11 +84,6 @@ IconButton.Draggable = true
 local IconCorner = Instance.new("UICorner")
 IconCorner.CornerRadius = UDim.new(1, 0)
 IconCorner.Parent = IconButton
-
-local IconStroke = Instance.new("UIStroke")
-IconStroke.Parent = IconButton
-IconStroke.Thickness = 0
-IconStroke.Color = Color3.fromRGB(255, 0, 0)
 
 local IconLabel = Instance.new("TextLabel")
 IconLabel.Name = "IconLabel"
@@ -169,7 +160,6 @@ local HeaderCorner = Instance.new("UICorner")
 HeaderCorner.CornerRadius = UDim.new(0, 12)
 HeaderCorner.Parent = Header
 
--- Fix bottom corners of header
 local HeaderFix = Instance.new("Frame")
 HeaderFix.Size = UDim2.new(1, 0, 0, 15)
 HeaderFix.Position = UDim2.new(0, 0, 1, -15)
@@ -271,45 +261,23 @@ local States = {
     jumpValue = SaveData.jump and SaveData.jump.value or 50,
     infiniteJumpEnabled = SaveData.infiniteJump or false,
     noclipEnabled = SaveData.noclip or false,
-    flyEnabled = SaveData.fly or false,
     espEnabled = SaveData.esp or false,
     loopTeleportEnabled = SaveData.loopTeleport and SaveData.loopTeleport.enabled or false,
     loopTeleportTarget = SaveData.loopTeleport and SaveData.loopTeleport.target or "",
-    flySpeed = 50,
 }
 
 -- ==================== CORES DISPONÍVEIS ====================
 local AvailableColors = {
-    {"Branco", {255, 255, 255}},
-    {"Preto", {0, 0, 0}},
-    {"Cinza Escuro", {35, 35, 35}},
-    {"Cinza", {100, 100, 100}},
-    {"Cinza Claro", {180, 180, 180}},
-    {"Vermelho", {255, 0, 0}},
-    {"Vermelho Escuro", {139, 0, 0}},
-    {"Laranja", {255, 165, 0}},
-    {"Amarelo", {255, 255, 0}},
-    {"Amarelo Ouro", {255, 215, 0}},
-    {"Verde Lima", {0, 255, 0}},
-    {"Verde", {0, 128, 0}},
-    {"Verde Escuro", {0, 100, 0}},
-    {"Ciano", {0, 255, 255}},
-    {"Azul Claro", {100, 149, 237}},
-    {"Azul", {0, 0, 255}},
-    {"Azul Royal", {65, 105, 225}},
-    {"Azul Marinho", {0, 0, 128}},
-    {"Roxo", {128, 0, 128}},
-    {"Violeta", {148, 0, 211}},
-    {"Magenta", {255, 0, 255}},
-    {"Rosa", {255, 105, 180}},
-    {"Rosa Claro", {255, 182, 193}},
-    {"Marrom", {139, 69, 19}},
-    {"Salmão", {250, 128, 114}},
-    {"Coral", {255, 127, 80}},
-    {"Turquesa", {64, 224, 208}},
-    {"Índigo", {75, 0, 130}},
-    {"Lavanda", {230, 230, 250}},
-    {"Menta", {152, 255, 152}},
+    {"Branco", {255, 255, 255}}, {"Preto", {0, 0, 0}}, {"Cinza Escuro", {35, 35, 35}},
+    {"Cinza", {100, 100, 100}}, {"Cinza Claro", {180, 180, 180}}, {"Vermelho", {255, 0, 0}},
+    {"Vermelho Escuro", {139, 0, 0}}, {"Laranja", {255, 165, 0}}, {"Amarelo", {255, 255, 0}},
+    {"Amarelo Ouro", {255, 215, 0}}, {"Verde Lima", {0, 255, 0}}, {"Verde", {0, 128, 0}},
+    {"Verde Escuro", {0, 100, 0}}, {"Ciano", {0, 255, 255}}, {"Azul Claro", {100, 149, 237}},
+    {"Azul", {0, 0, 255}}, {"Azul Royal", {65, 105, 225}}, {"Azul Marinho", {0, 0, 128}},
+    {"Roxo", {128, 0, 128}}, {"Violeta", {148, 0, 211}}, {"Magenta", {255, 0, 255}},
+    {"Rosa", {255, 105, 180}}, {"Rosa Claro", {255, 182, 193}}, {"Marrom", {139, 69, 19}},
+    {"Salmão", {250, 128, 114}}, {"Coral", {255, 127, 80}}, {"Turquesa", {64, 224, 208}},
+    {"Índigo", {75, 0, 130}}, {"Lavanda", {230, 230, 250}}, {"Menta", {152, 255, 152}},
 }
 
 -- ==================== FUNÇÕES UTILITÁRIAS ====================
@@ -370,7 +338,6 @@ local function CreateToggleWithInput(labelText, order, defaultEnabled, defaultVa
     label.Parent = frame
     label.ZIndex = 53
 
-    -- Input
     local inputBox = Instance.new("TextBox")
     inputBox.Size = UDim2.new(0, 100, 0, 28)
     inputBox.Position = UDim2.new(0, 10, 0, 33)
@@ -396,7 +363,6 @@ local function CreateToggleWithInput(labelText, order, defaultEnabled, defaultVa
         end
     end)
 
-    -- Toggle Button
     local toggleBtn = Instance.new("TextButton")
     toggleBtn.Size = UDim2.new(0, 80, 0, 28)
     toggleBtn.Position = UDim2.new(1, -95, 0, 33)
@@ -695,6 +661,7 @@ local infiniteJumpConn = nil
 local function ToggleInfiniteJump(enabled)
     States.infiniteJumpEnabled = enabled
     if enabled then
+        if infiniteJumpConn then infiniteJumpConn:Disconnect() end
         infiniteJumpConn = UserInputService.JumpRequest:Connect(function()
             local char = Player.Character
             if char and char:FindFirstChild("Humanoid") then
@@ -709,14 +676,19 @@ local function ToggleInfiniteJump(enabled)
     end
 end
 
--- Noclip
+-- Noclip (FIXED)
 local noclipConn = nil
 local function ToggleNoclip(enabled)
     States.noclipEnabled = enabled
+    if noclipConn then
+        noclipConn:Disconnect()
+        noclipConn = nil
+    end
+
     if enabled then
         noclipConn = RunService.Stepped:Connect(function()
             local char = Player.Character
-            if char then
+            if char and States.noclipEnabled then
                 for _, part in pairs(char:GetDescendants()) do
                     if part:IsA("BasePart") then
                         part.CanCollide = false
@@ -725,16 +697,13 @@ local function ToggleNoclip(enabled)
             end
         end)
     else
-        if noclipConn then
-            noclipConn:Disconnect()
-            noclipConn = nil
-        end
-        -- Restore collision
         local char = Player.Character
         if char then
             for _, part in pairs(char:GetDescendants()) do
                 if part:IsA("BasePart") then
-                    part.CanCollide = true
+                    if part.Name == "HumanoidRootPart" or part.Name == "Torso" or part.Name == "UpperTorso" or part.Name == "LowerTorso" or part.Name == "Head" then
+                        part.CanCollide = true
+                    end
                 end
             end
         end
@@ -767,6 +736,8 @@ local loopTeleportConn = nil
 local function ToggleLoopTeleport(enabled, targetName)
     States.loopTeleportEnabled = enabled
     States.loopTeleportTarget = targetName or ""
+    if loopTeleportConn then loopTeleportConn:Disconnect() end
+    
     if enabled and targetName and targetName ~= "" then
         loopTeleportConn = RunService.Heartbeat:Connect(function()
             if States.loopTeleportEnabled then
@@ -777,87 +748,6 @@ local function ToggleLoopTeleport(enabled, targetName)
         if loopTeleportConn then
             loopTeleportConn:Disconnect()
             loopTeleportConn = nil
-        end
-    end
-end
-
--- Fly
-local flyConn = nil
-local flyBodyVelocity = nil
-local flyBodyGyro = nil
-local function ToggleFly(enabled)
-    States.flyEnabled = enabled
-    if enabled then
-        local char = Player.Character
-        if char and char:FindFirstChild("HumanoidRootPart") then
-            local hrp = char.HumanoidRootPart
-            
-            flyBodyVelocity = Instance.new("BodyVelocity")
-            flyBodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-            flyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
-            flyBodyVelocity.Parent = hrp
-
-            flyBodyGyro = Instance.new("BodyGyro")
-            flyBodyGyro.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
-            flyBodyGyro.P = 9e4
-            flyBodyGyro.Parent = hrp
-
-            if char:FindFirstChild("Humanoid") then
-                char.Humanoid.PlatformStand = true
-            end
-
-            flyConn = RunService.RenderStepped:Connect(function()
-                if not States.flyEnabled then return end
-                local cam = workspace.CurrentCamera
-                local moveDir = Vector3.new(0, 0, 0)
-                
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + cam.CFrame.LookVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - cam.CFrame.LookVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - cam.CFrame.RightVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + cam.CFrame.RightVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
-                    moveDir = moveDir + Vector3.new(0, 1, 0)
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
-                    moveDir = moveDir - Vector3.new(0, 1, 0)
-                end
-
-                if moveDir.Magnitude > 0 then
-                    moveDir = moveDir.Unit
-                end
-
-                if flyBodyVelocity and flyBodyVelocity.Parent then
-                    flyBodyVelocity.Velocity = moveDir * States.flySpeed
-                end
-                if flyBodyGyro and flyBodyGyro.Parent then
-                    flyBodyGyro.CFrame = cam.CFrame
-                end
-            end)
-        end
-    else
-        if flyConn then
-            flyConn:Disconnect()
-            flyConn = nil
-        end
-        if flyBodyVelocity then
-            flyBodyVelocity:Destroy()
-            flyBodyVelocity = nil
-        end
-        if flyBodyGyro then
-            flyBodyGyro:Destroy()
-            flyBodyGyro = nil
-        end
-        local char = Player.Character
-        if char and char:FindFirstChild("Humanoid") then
-            char.Humanoid.PlatformStand = false
         end
     end
 end
@@ -885,13 +775,11 @@ local function CreateESPForPlayer(target)
     local humanoid = char:FindFirstChild("Humanoid")
     if not hrp or not humanoid then return end
 
-    -- Team color
     local teamColor = Color3.fromRGB(255, 255, 255)
     if target.Team then
         teamColor = target.Team.TeamColor.Color
     end
 
-    -- Highlight
     local highlight = Instance.new("Highlight")
     highlight.Name = "ESP_Highlight_" .. target.Name
     highlight.Adornee = char
@@ -902,7 +790,6 @@ local function CreateESPForPlayer(target)
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Parent = espFolder
 
-    -- Billboard
     local billboard = Instance.new("BillboardGui")
     billboard.Name = "ESP_Billboard_" .. target.Name
     billboard.Adornee = hrp
@@ -934,7 +821,6 @@ local function CreateESPForPlayer(target)
     distanceLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
     distanceLabel.Parent = billboard
 
-    -- Update distance
     local updateConn = RunService.RenderStepped:Connect(function()
         if not States.espEnabled then return end
         local myChar = Player.Character
@@ -957,14 +843,10 @@ local function ToggleESP(enabled)
 
         for _, p in pairs(Players:GetPlayers()) do
             if p ~= Player then
-                if p.Character then
-                    CreateESPForPlayer(p)
-                end
+                if p.Character then CreateESPForPlayer(p) end
                 local charAddedConn = p.CharacterAdded:Connect(function()
                     task.wait(1)
-                    if States.espEnabled then
-                        CreateESPForPlayer(p)
-                    end
+                    if States.espEnabled then CreateESPForPlayer(p) end
                 end)
                 table.insert(espConnections, charAddedConn)
             end
@@ -974,9 +856,7 @@ local function ToggleESP(enabled)
             if States.espEnabled then
                 local charAddedConn = p.CharacterAdded:Connect(function()
                     task.wait(1)
-                    if States.espEnabled then
-                        CreateESPForPlayer(p)
-                    end
+                    if States.espEnabled then CreateESPForPlayer(p) end
                 end)
                 table.insert(espConnections, charAddedConn)
             end
@@ -987,20 +867,14 @@ end
 
 -- FPS Boost
 local function FPSBoost()
-    local g = game
-    local light = Lighting
-
-    -- Reduce quality
     settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
     
-    -- Disable effects
-    for _, v in pairs(light:GetChildren()) do
+    for _, v in pairs(Lighting:GetChildren()) do
         if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("BloomEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("DepthOfFieldEffect") then
             v.Enabled = false
         end
     end
     
-    -- Reduce terrain
     pcall(function()
         workspace.Terrain.WaterWaveSize = 0
         workspace.Terrain.WaterWaveSpeed = 0
@@ -1008,27 +882,17 @@ local function FPSBoost()
         workspace.Terrain.WaterTransparency = 0
     end)
 
-    -- Remove textures and decals for performance
     for _, v in pairs(workspace:GetDescendants()) do
         pcall(function()
-            if v:IsA("Decal") or v:IsA("Texture") then
-                v.Transparency = 1
-            end
-            if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then
-                v.Enabled = false
-            end
-            if v:IsA("MeshPart") then
-                v.Material = Enum.Material.SmoothPlastic
-                v.TextureID = ""
-            end
-            if v:IsA("BasePart") and not v:IsA("MeshPart") then
-                v.Material = Enum.Material.SmoothPlastic
-            end
+            if v:IsA("Decal") or v:IsA("Texture") then v.Transparency = 1 end
+            if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then v.Enabled = false end
+            if v:IsA("MeshPart") then v.Material = Enum.Material.SmoothPlastic v.TextureID = "" end
+            if v:IsA("BasePart") and not v:IsA("MeshPart") then v.Material = Enum.Material.SmoothPlastic end
         end)
     end
     
-    light.GlobalShadows = false
-    light.FogEnd = 9e9
+    Lighting.GlobalShadows = false
+    Lighting.FogEnd = 9e9
 end
 
 -- TpTool
@@ -1063,25 +927,18 @@ local function CreateTpTool()
     tool.Parent = Player.Backpack
 end
 
--- ==================== BORDA RPG ANIMADA ====================
+-- ==================== BORDA RPG ANIMADA DO MENU ====================
 local menuBorderConn = nil
-local iconBorderConn = nil
 
-local function StartRPGBorder(strokeObj, colorTable)
-    local index = 1
+local function StartRPGBorder(strokeObj)
     local conn
     conn = RunService.Heartbeat:Connect(function()
         if not strokeObj or not strokeObj.Parent then
-            conn:Disconnect()
+            if conn then conn:Disconnect() end
             return
         end
-        local t = tick() * 2
-        local i = math.floor(t % #colorTable) + 1
-        local nextI = (i % #colorTable) + 1
-        local alpha = (t % 1)
-        local c1 = Color3.fromRGB(unpack(colorTable[i]))
-        local c2 = Color3.fromRGB(unpack(colorTable[nextI]))
-        strokeObj.Color = c1:Lerp(c2, alpha)
+        local hue = (os.clock() * 0.4) % 1
+        strokeObj.Color = Color3.fromHSV(hue, 1, 1)
     end)
     return conn
 end
@@ -1091,7 +948,7 @@ local function ToggleMenuBorder(enabled)
     if enabled then
         MainStroke.Thickness = 3
         if menuBorderConn then menuBorderConn:Disconnect() end
-        menuBorderConn = StartRPGBorder(MainStroke, SaveData.menuBorderColors or {{255,0,0},{255,127,0},{255,255,0},{0,255,0},{0,0,255},{75,0,130},{148,0,211}})
+        menuBorderConn = StartRPGBorder(MainStroke)
     else
         MainStroke.Thickness = 0
         if menuBorderConn then
@@ -1101,28 +958,7 @@ local function ToggleMenuBorder(enabled)
     end
 end
 
-local function ToggleIconBorder(enabled)
-    SaveData.iconBorder = enabled
-    if enabled then
-        IconStroke.Thickness = 3
-        if iconBorderConn then iconBorderConn:Disconnect() end
-        iconBorderConn = StartRPGBorder(IconStroke, SaveData.iconBorderColors or {{255,0,0},{255,127,0},{255,255,0},{0,255,0},{0,0,255},{75,0,130},{148,0,211}})
-    else
-        IconStroke.Thickness = 0
-        if iconBorderConn then
-            iconBorderConn:Disconnect()
-            iconBorderConn = nil
-        end
-    end
-end
-
--- Restore borders on load
-if SaveData.menuBorder then
-    ToggleMenuBorder(true)
-end
-if SaveData.iconBorder then
-    ToggleIconBorder(true)
-end
+if SaveData.menuBorder then ToggleMenuBorder(true) end
 
 -- ==================== CRIAÇÃO DAS ABAS ====================
 local Tabs = {
@@ -1146,60 +982,32 @@ local function SetActiveTab(tabId)
     end
 end
 
--- Funções de carregamento de conteúdo de cada aba
 local function LoadFisicoTab()
     ClearContent()
     SetActiveTab("fisico")
-
     CreateSectionTitle("Modificações Físicas", 0)
 
-    -- Speed
     CreateToggleWithInput("🏃 Alterar Velocidade", 1, States.speedEnabled, States.speedValue,
-        function(enabled)
-            States.speedEnabled = enabled
-            ApplySpeed()
-        end,
-        function(val)
-            States.speedValue = val
-            if States.speedEnabled then ApplySpeed() end
-        end
+        function(enabled) States.speedEnabled = enabled ApplySpeed() end,
+        function(val) States.speedValue = val if States.speedEnabled then ApplySpeed() end end
     )
 
-    -- Jump
     CreateToggleWithInput("🦘 Alterar Pulo", 2, States.jumpEnabled, States.jumpValue,
-        function(enabled)
-            States.jumpEnabled = enabled
-            ApplyJump()
-        end,
-        function(val)
-            States.jumpValue = val
-            if States.jumpEnabled then ApplyJump() end
-        end
+        function(enabled) States.jumpEnabled = enabled ApplyJump() end,
+        function(val) States.jumpValue = val if States.jumpEnabled then ApplyJump() end end
     )
 
-    -- Infinite Jump
-    CreateToggle("♾️ Pulo Infinito", 3, States.infiniteJumpEnabled, function(enabled)
-        ToggleInfiniteJump(enabled)
-    end)
-
-    -- Noclip
-    CreateToggle("👻 Noclip (Atravessar Paredes)", 4, States.noclipEnabled, function(enabled)
-        ToggleNoclip(enabled)
-    end)
+    CreateToggle("♾️ Pulo Infinito", 3, States.infiniteJumpEnabled, function(enabled) ToggleInfiniteJump(enabled) end)
+    CreateToggle("ghost Noclip (Atravessar Paredes)", 4, States.noclipEnabled, function(enabled) ToggleNoclip(enabled) end)
 end
 
 local function LoadMagicoTab()
     ClearContent()
     SetActiveTab("magico")
-
     CreateSectionTitle("Habilidades Mágicas", 0)
 
-    -- Teleport
-    CreateInputButton("🌀 Teleporte para Player", "Nome do player...", "Teleportar", 1, function(text)
-        TeleportToPlayer(text)
-    end)
+    CreateInputButton("🌀 Teleporte para Player", "Nome do player...", "Teleportar", 1, function(text) TeleportToPlayer(text) end)
 
-    -- Loop Teleport
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(1, 0, 0, 70)
     frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
@@ -1267,74 +1075,43 @@ local function LoadMagicoTab()
 
     inputBox.FocusLost:Connect(function()
         States.loopTeleportTarget = inputBox.Text
-        if States.loopTeleportEnabled then
-            ToggleLoopTeleport(true, inputBox.Text)
-        end
-    end)
-
-    -- Fly
-    CreateToggle("🕊️ Fly (Voar)", 3, States.flyEnabled, function(enabled)
-        ToggleFly(enabled)
-    end)
-
-    -- Fly Speed Slider
-    CreateSlider("🚀 Velocidade do Fly", 4, 10, 200, States.flySpeed, function(val)
-        States.flySpeed = val
+        if States.loopTeleportEnabled then ToggleLoopTeleport(true, inputBox.Text) end
     end)
 end
 
 local function LoadVisualTab()
     ClearContent()
     SetActiveTab("visual")
-
     CreateSectionTitle("Opções Visuais", 0)
-
-    -- FPS Boost
-    CreateButton("⚡ FPS Boost (Liso 100%)", 1, function()
-        FPSBoost()
-    end)
-
-    -- ESP
-    CreateToggle("👁️ ESP (Ver Players)", 2, States.espEnabled, function(enabled)
-        ToggleESP(enabled)
-    end)
+    CreateButton("⚡ FPS Boost (Liso 100%)", 1, function() FPSBoost() end)
+    CreateToggle("👁️ ESP (Ver Players)", 2, States.espEnabled, function(enabled) ToggleESP(enabled) end)
 end
 
 local function LoadCriacaoTab()
     ClearContent()
     SetActiveTab("criacao")
-
     CreateSectionTitle("Ferramentas de Criação", 0)
-
-    -- TpTool
-    CreateButton("🔮 TpTool (Teleporte por Clique)", 1, function()
-        CreateTpTool()
-    end)
+    CreateButton("🔮 TpTool (Teleporte por Clique)", 1, function() CreateTpTool() end)
 end
 
 local function LoadConfigTab()
     ClearContent()
     SetActiveTab("config")
-
     CreateSectionTitle("Configurações", 0)
 
-    -- Menu Size
     CreateSlider("📐 Tamanho do Menu", 1, 50, 150, (SaveData.menuSize or 1) * 100, function(val)
         local scale = val / 100
         SaveData.menuSize = scale
         MainFrame.Size = UDim2.new(0, 550 * scale, 0, 380 * scale)
     end)
 
-    -- Icon Size
     CreateSlider("🔘 Tamanho do Ícone", 2, 30, 200, (SaveData.iconSize or 1) * 100, function(val)
         local scale = val / 100
         SaveData.iconSize = scale
         IconButton.Size = UDim2.new(0, 60 * scale, 0, 60 * scale)
     end)
 
-    -- Menu Color Section
     CreateSectionTitle("🎨 Cor do Menu", 3)
-
     local menuColorScroll = Instance.new("ScrollingFrame")
     menuColorScroll.Size = UDim2.new(1, 0, 0, 120)
     menuColorScroll.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -1385,9 +1162,7 @@ local function LoadConfigTab()
         end)
     end
 
-    -- Icon Color Section
     CreateSectionTitle("🎨 Cor do Ícone", 5)
-
     local iconColorScroll = Instance.new("ScrollingFrame")
     iconColorScroll.Size = UDim2.new(1, 0, 0, 120)
     iconColorScroll.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -1438,28 +1213,17 @@ local function LoadConfigTab()
         end)
     end
 
-    -- Menu Border Toggle
-    CreateToggle("🌈 Borda RPG no Menu", 7, SaveData.menuBorder or false, function(enabled)
-        ToggleMenuBorder(enabled)
-    end)
+    CreateToggle("🌈 Borda RPG no Menu", 7, SaveData.menuBorder or false, function(enabled) ToggleMenuBorder(enabled) end)
 
-    -- Icon Border Toggle
-    CreateToggle("🌈 Borda RPG no Ícone", 8, SaveData.iconBorder or false, function(enabled)
-        ToggleIconBorder(enabled)
-    end)
-
-    -- Save Button
     CreateButton("💾 Salvar Configurações", 9, function()
         SaveData.speed = {enabled = States.speedEnabled, value = States.speedValue}
         SaveData.jump = {enabled = States.jumpEnabled, value = States.jumpValue}
         SaveData.infiniteJump = States.infiniteJumpEnabled
         SaveData.noclip = States.noclipEnabled
-        SaveData.fly = States.flyEnabled
         SaveData.esp = States.espEnabled
         SaveData.loopTeleport = {enabled = States.loopTeleportEnabled, target = States.loopTeleportTarget}
         SaveSettings()
         
-        -- Feedback visual
         local saveNotif = Instance.new("TextLabel")
         saveNotif.Size = UDim2.new(1, 0, 0, 30)
         saveNotif.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
@@ -1476,9 +1240,7 @@ local function LoadConfigTab()
         notifCorner.Parent = saveNotif
 
         task.delay(2, function()
-            if saveNotif and saveNotif.Parent then
-                saveNotif:Destroy()
-            end
+            if saveNotif and saveNotif.Parent then saveNotif:Destroy() end
         end)
     end)
 end
@@ -1520,7 +1282,6 @@ local function OpenMenu()
     MainFrame.Visible = true
     IconButton.Visible = false
     
-    -- Animação de abertura
     MainFrame.Size = UDim2.new(0, 0, 0, 0)
     MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
     
@@ -1534,10 +1295,7 @@ local function OpenMenu()
     })
     tween:Play()
 
-    -- Load default tab
-    if States.currentTab == "" then
-        LoadFisicoTab()
-    end
+    if States.currentTab == "" then LoadFisicoTab() end
 end
 
 local function CloseMenu()
@@ -1554,12 +1312,8 @@ local function CloseMenu()
     end)
 end
 
--- Ícone abre menu
-IconButton.MouseButton1Click:Connect(function()
-    OpenMenu()
-end)
+IconButton.MouseButton1Click:Connect(function() OpenMenu() end)
 
--- Clicar fora do menu fecha (duplo clique)
 local lastClickTime = 0
 local lastClickOutside = false
 
@@ -1567,7 +1321,6 @@ UserInputService.InputBegan:Connect(function(input, processed)
     if not States.menuOpen then return end
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         local mousePos = UserInputService:GetMouseLocation()
-        
         local menuPos = MainFrame.AbsolutePosition
         local menuSize = MainFrame.AbsoluteSize
         
@@ -1599,11 +1352,6 @@ Player.CharacterAdded:Connect(function(char)
         task.wait(0.5)
         ToggleNoclip(true)
     end
-    if States.flyEnabled then
-        ToggleFly(false)
-        task.wait(0.5)
-        ToggleFly(true)
-    end
 end)
 
 -- ==================== APLICAR ESTADOS SALVOS ====================
@@ -1613,12 +1361,10 @@ task.spawn(function()
     if States.jumpEnabled then ApplyJump() end
     if States.infiniteJumpEnabled then ToggleInfiniteJump(true) end
     if States.noclipEnabled then ToggleNoclip(true) end
-    if States.flyEnabled then ToggleFly(true) end
     if States.espEnabled then ToggleESP(true) end
     if States.loopTeleportEnabled then ToggleLoopTeleport(true, States.loopTeleportTarget) end
 end)
 
--- ==================== APLICAR TAMANHOS SALVOS ====================
 if SaveData.menuSize and SaveData.menuSize ~= 1 then
     local s = SaveData.menuSize
     MainFrame.Size = UDim2.new(0, 550 * s, 0, 380 * s)
@@ -1652,7 +1398,6 @@ task.spawn(function()
     notifStroke.Color = Color3.fromRGB(0, 170, 255)
     notifStroke.Parent = notif
 
-    -- Animar entrada
     local tweenIn = TweenService:Create(notif, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
         Position = UDim2.new(0.5, -150, 0, 20)
     })
@@ -1660,18 +1405,15 @@ task.spawn(function()
 
     task.wait(3)
 
-    -- Animar saída
     local tweenOut = TweenService:Create(notif, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
         Position = UDim2.new(0.5, -150, 0, -60)
     })
     tweenOut:Play()
-    tweenOut.Completed:Connect(function()
-        notif:Destroy()
-    end)
+    tweenOut.Completed:Connect(function() notif:Destroy() end)
 end)
 
 print("═══════════════════════════════════════")
-print("  🛡️ Admin Hub v1.0 Carregado!")
+print("  🛡️ Admin Hub v1.0 Fix Carregado!")
 print("  Clique no ícone ADM para abrir")
 print("  Duplo clique fora para fechar")
 print("═══════════════════════════════════════")
