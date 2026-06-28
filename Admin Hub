@@ -11,6 +11,10 @@ local HttpService = game:GetService("HttpService")
 local Player = Players.LocalPlayer
 local Mouse = Player:GetMouse()
 
+local OriginalAmbient = Lighting.Ambient
+local OriginalOutdoorAmbient = Lighting.OutdoorAmbient
+local OriginalBrightness = Lighting.Brightness
+
 -- ==================== SISTEMA DE SALVAMENTO ====================
 local SaveData = {}
 local SAVE_KEY = "AdminHub_SaveData_v1"
@@ -264,6 +268,7 @@ local States = {
     espEnabled = SaveData.esp or false,
     loopTeleportEnabled = SaveData.loopTeleport and SaveData.loopTeleport.enabled or false,
     loopTeleportTarget = SaveData.loopTeleport and SaveData.loopTeleport.target or "",
+    nightVisionEnabled = false,
 }
 
 -- ==================== CORES DISPONÍVEIS ====================
@@ -865,6 +870,30 @@ local function ToggleESP(enabled)
     end
 end
 
+-- Visão Noturna
+local nightVisionConn = nil
+local function ToggleNightVision(enabled)
+    States.nightVisionEnabled = enabled
+    if nightVisionConn then
+        nightVisionConn:Disconnect()
+        nightVisionConn = nil
+    end
+    
+    if enabled then
+        nightVisionConn = RunService.Heartbeat:Connect(function()
+            if States.nightVisionEnabled then
+                Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+                Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
+                Lighting.Brightness = 2
+            end
+        end)
+    else
+        Lighting.Ambient = OriginalAmbient
+        Lighting.OutdoorAmbient = OriginalOutdoorAmbient
+        Lighting.Brightness = OriginalBrightness
+    end
+end
+
 -- Aumento de FPS
 local function FPSBoost()
     settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
@@ -999,7 +1028,6 @@ local function LoadFisicoTab()
     )
 
     CreateToggle("♾️ Pulo Infinito", 3, States.infiniteJumpEnabled, function(enabled) ToggleInfiniteJump(enabled) end)
-    CreateToggle("👻 Noclip (Atravessar Paredes)", 4, States.noclipEnabled, function(enabled) ToggleNoclip(enabled) end)
 end
 
 local function LoadMagicoTab()
@@ -1078,6 +1106,8 @@ local function LoadMagicoTab()
         States.loopTeleportTarget = inputBox.Text
         if States.loopTeleportEnabled then ToggleLoopTeleport(true, inputBox.Text) end
     end)
+
+    CreateToggle("👻 Noclip (Atravessar Paredes)", 3, States.noclipEnabled, function(enabled) ToggleNoclip(enabled) end)
 end
 
 local function LoadVisualTab()
@@ -1086,6 +1116,7 @@ local function LoadVisualTab()
     CreateSectionTitle("Opções Visuais", 0)
     CreateButton("⚡ Aumento de FPS (Liso 100%)", 1, function() FPSBoost() end)
     CreateToggle("👁️ ESP (Ver Players)", 2, States.espEnabled, function(enabled) ToggleESP(enabled) end)
+    CreateToggle("🌙 Visão Noturna", 3, States.nightVisionEnabled, function(enabled) ToggleNightVision(enabled) end)
 end
 
 local function LoadCriacaoTab()
