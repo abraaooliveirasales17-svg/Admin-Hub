@@ -1,4 +1,4 @@
--- Admin Hub v1.0 Modificado
+-- Admin Hub v1.0 Corrigido
 -- Script Menu Completo para Roblox (Fly & Ícone RPG Removidos)
 
 local Players = game:GetService("Players")
@@ -96,9 +96,9 @@ IconLabel.Font = Enum.Font.GothamBold
 IconLabel.Parent = IconButton
 IconLabel.ZIndex = 101
 
--- ==================== SHADOW DO ÍCONE ====================
+-- ==================== SOMBRA DO ÍCONE ====================
 local IconShadow = Instance.new("ImageLabel")
-IconShadow.Name = "Shadow"
+IconShadow.Name = "Sombra"
 IconShadow.BackgroundTransparency = 1
 IconShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
 IconShadow.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -134,7 +134,7 @@ MainStroke.Color = Color3.fromRGB(255, 0, 0)
 
 -- ==================== SOMBRA DO MENU ====================
 local MenuShadow = Instance.new("ImageLabel")
-MenuShadow.Name = "Shadow"
+MenuShadow.Name = "Sombra"
 MenuShadow.BackgroundTransparency = 1
 MenuShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
 MenuShadow.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -170,11 +170,11 @@ HeaderFix.Parent = Header
 HeaderFix.ZIndex = 51
 
 local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Name = "Title"
+TitleLabel.Name = "Título"
 TitleLabel.Size = UDim2.new(1, -20, 1, 0)
 TitleLabel.Position = UDim2.new(0, 10, 0, 0)
 TitleLabel.BackgroundTransparency = 1
-TitleLabel.Text = "🛡️ Admin Hub"
+TitleLabel.Text = "🛡️ Central de Administração"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.TextSize = 18
 TitleLabel.Font = Enum.Font.GothamBold
@@ -183,7 +183,7 @@ TitleLabel.Parent = Header
 TitleLabel.ZIndex = 52
 
 local VersionLabel = Instance.new("TextLabel")
-VersionLabel.Name = "Version"
+VersionLabel.Name = "Versão"
 VersionLabel.Size = UDim2.new(0, 60, 1, 0)
 VersionLabel.Position = UDim2.new(1, -70, 0, 0)
 VersionLabel.BackgroundTransparency = 1
@@ -280,7 +280,7 @@ local AvailableColors = {
     {"Índigo", {75, 0, 130}}, {"Lavanda", {230, 230, 250}}, {"Menta", {152, 255, 152}},
 }
 
--- ==================== FUNÇÕES UTILITÁRIAS ====================
+-- =================== FUNÇÕES UTILITÁRIAS ====================
 local TabButtons = {}
 local ActiveConnections = {}
 
@@ -628,9 +628,9 @@ local function CreateSlider(labelText, order, minVal, maxVal, defaultVal, onChan
     return frame
 end
 
--- ==================== FUNÇÕES DO JOGO ====================
+-- =================== FUNÇÕES DO JOGO ====================
 
--- Speed
+-- Velocidade
 local function ApplySpeed()
     local char = Player.Character
     if char and char:FindFirstChild("Humanoid") then
@@ -642,7 +642,7 @@ local function ApplySpeed()
     end
 end
 
--- Jump
+-- Pular
 local function ApplyJump()
     local char = Player.Character
     if char and char:FindFirstChild("Humanoid") then
@@ -656,7 +656,7 @@ local function ApplyJump()
     end
 end
 
--- Infinite Jump
+-- Salto Infinito
 local infiniteJumpConn = nil
 local function ToggleInfiniteJump(enabled)
     States.infiniteJumpEnabled = enabled
@@ -676,7 +676,7 @@ local function ToggleInfiniteJump(enabled)
     end
 end
 
--- Noclip (FIXED)
+-- Noclip
 local noclipConn = nil
 local function ToggleNoclip(enabled)
     States.noclipEnabled = enabled
@@ -710,7 +710,7 @@ local function ToggleNoclip(enabled)
     end
 end
 
--- Teleport to player
+-- Teletransportar para o jogador
 local function FindPlayer(name)
     name = name:lower()
     for _, p in pairs(Players:GetPlayers()) do
@@ -731,7 +731,7 @@ local function TeleportToPlayer(name)
     end
 end
 
--- Loop Teleport
+-- Teletransporte em Loop
 local loopTeleportConn = nil
 local function ToggleLoopTeleport(enabled, targetName)
     States.loopTeleportEnabled = enabled
@@ -865,7 +865,7 @@ local function ToggleESP(enabled)
     end
 end
 
--- FPS Boost
+-- Aumento de FPS
 local function FPSBoost()
     settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
     
@@ -905,7 +905,7 @@ local function CreateTpTool()
     local handle = Instance.new("Part")
     handle.Name = "Handle"
     handle.Size = Vector3.new(1, 1, 1)
-    handle.BrickColor = BrickColor.new("Bright blue")
+    handle.BrickColor = BrickColor.new("Light blue")
     handle.Material = Enum.Material.Neon
     handle.Parent = tool
 
@@ -931,16 +931,16 @@ end
 local menuBorderConn = nil
 
 local function StartRPGBorder(strokeObj)
-    local conn
-    conn = RunService.Heartbeat:Connect(function()
+    local connection
+    connection = RunService.Heartbeat:Connect(function()
         if not strokeObj or not strokeObj.Parent then
-            if conn then conn:Disconnect() end
+            if connection then connection:Disconnect() end
             return
         end
         local hue = (os.clock() * 0.4) % 1
         strokeObj.Color = Color3.fromHSV(hue, 1, 1)
     end)
-    return conn
+    return connection
 end
 
 local function ToggleMenuBorder(enabled)
@@ -966,7 +966,8 @@ local Tabs = {
     {name = "✨ Mágico", id = "magico", order = 2},
     {name = "👁️ Visual", id = "visual", order = 3},
     {name = "🔧 Criação", id = "criacao", order = 4},
-    {name = "⚙️ Config", id = "config", order = 5},
+    {name = "⚙️ Configuração", id = "config", order = 5},
+    {name = "📊 Status", id = "status", order = 6},
 }
 
 local function SetActiveTab(tabId)
@@ -998,7 +999,7 @@ local function LoadFisicoTab()
     )
 
     CreateToggle("♾️ Pulo Infinito", 3, States.infiniteJumpEnabled, function(enabled) ToggleInfiniteJump(enabled) end)
-    CreateToggle("ghost Noclip (Atravessar Paredes)", 4, States.noclipEnabled, function(enabled) ToggleNoclip(enabled) end)
+    CreateToggle("👻 Noclip (Atravessar Paredes)", 4, States.noclipEnabled, function(enabled) ToggleNoclip(enabled) end)
 end
 
 local function LoadMagicoTab()
@@ -1006,7 +1007,7 @@ local function LoadMagicoTab()
     SetActiveTab("magico")
     CreateSectionTitle("Habilidades Mágicas", 0)
 
-    CreateInputButton("🌀 Teleporte para Player", "Nome do player...", "Teleportar", 1, function(text) TeleportToPlayer(text) end)
+    CreateInputButton("🌀 Teleporte para Player", "Nome do player...", "Teletransportar", 1, function(text) TeleportToPlayer(text) end)
 
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(1, 0, 0, 70)
@@ -1024,7 +1025,7 @@ local function LoadMagicoTab()
     label.Size = UDim2.new(1, -10, 0, 25)
     label.Position = UDim2.new(0, 10, 0, 5)
     label.BackgroundTransparency = 1
-    label.Text = "🔄 Loop Teleporte"
+    label.Text = "🔄 Teletransporte em Loop"
     label.TextColor3 = Color3.fromRGB(255, 255, 255)
     label.TextSize = 13
     label.Font = Enum.Font.GothamSemibold
@@ -1037,7 +1038,7 @@ local function LoadMagicoTab()
     inputBox.Position = UDim2.new(0, 10, 0, 33)
     inputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     inputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    inputBox.PlaceholderText = "Nome do player..."
+    inputBox.PlaceholderText = "Nome do jogador..."
     inputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
     inputBox.Text = States.loopTeleportTarget
     inputBox.TextSize = 13
@@ -1083,7 +1084,7 @@ local function LoadVisualTab()
     ClearContent()
     SetActiveTab("visual")
     CreateSectionTitle("Opções Visuais", 0)
-    CreateButton("⚡ FPS Boost (Liso 100%)", 1, function() FPSBoost() end)
+    CreateButton("⚡ Aumento de FPS (Liso 100%)", 1, function() FPSBoost() end)
     CreateToggle("👁️ ESP (Ver Players)", 2, States.espEnabled, function(enabled) ToggleESP(enabled) end)
 end
 
@@ -1091,7 +1092,7 @@ local function LoadCriacaoTab()
     ClearContent()
     SetActiveTab("criacao")
     CreateSectionTitle("Ferramentas de Criação", 0)
-    CreateButton("🔮 TpTool (Teleporte por Clique)", 1, function() CreateTpTool() end)
+    CreateButton("🔮 TpTool (Teletransporte por Clique)", 1, function() CreateTpTool() end)
 end
 
 local function LoadConfigTab()
@@ -1215,7 +1216,7 @@ local function LoadConfigTab()
 
     CreateToggle("🌈 Borda RPG no Menu", 7, SaveData.menuBorder or false, function(enabled) ToggleMenuBorder(enabled) end)
 
-    CreateButton("💾 Salvar Configurações", 9, function()
+    CreateButton("💾 Salvar configurações", 9, function()
         SaveData.speed = {enabled = States.speedEnabled, value = States.speedValue}
         SaveData.jump = {enabled = States.jumpEnabled, value = States.jumpValue}
         SaveData.infiniteJump = States.infiniteJumpEnabled
@@ -1227,7 +1228,7 @@ local function LoadConfigTab()
         local saveNotif = Instance.new("TextLabel")
         saveNotif.Size = UDim2.new(1, 0, 0, 30)
         saveNotif.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-        saveNotif.Text = "✅ Configurações Salvas!"
+        saveNotif.Text = "✅ Configurações salvas!"
         saveNotif.TextColor3 = Color3.fromRGB(255, 255, 255)
         saveNotif.TextSize = 14
         saveNotif.Font = Enum.Font.GothamBold
@@ -1242,6 +1243,88 @@ local function LoadConfigTab()
         task.delay(2, function()
             if saveNotif and saveNotif.Parent then saveNotif:Destroy() end
         end)
+    end)
+end
+
+-- ==================== ABA STATUS ADICIONADA ====================
+local function CreateStatusLabel(labelText, valueText, order)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(1, 0, 0, 45)
+    frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    frame.BackgroundTransparency = 0.3
+    frame.LayoutOrder = order
+    frame.Parent = ContentPanel
+    frame.ZIndex = 52
+
+    local frameCorner = Instance.new("UICorner")
+    frameCorner.CornerRadius = UDim.new(0, 8)
+    frameCorner.Parent = frame
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0, 160, 1, 0)
+    label.Position = UDim2.new(0, 10, 0, 0)
+    label.BackgroundTransparency = 1
+    label.Text = labelText
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextSize = 13
+    label.Font = Enum.Font.GothamSemibold
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = frame
+    label.ZIndex = 53
+
+    local valLabel = Instance.new("TextLabel")
+    valLabel.Size = UDim2.new(1, -180, 1, 0)
+    valLabel.Position = UDim2.new(0, 170, 0, 0)
+    valLabel.BackgroundTransparency = 1
+    valLabel.Text = valueText
+    valLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+    valLabel.TextSize = 13
+    valLabel.Font = Enum.Font.Gotham
+    valLabel.TextXAlignment = Enum.TextXAlignment.Right
+    valLabel.Parent = frame
+    valLabel.ZIndex = 53
+
+    return frame, valLabel
+end
+
+local function LoadStatusTab()
+    ClearContent()
+    SetActiveTab("status")
+    CreateSectionTitle("Status do Servidor", 0)
+
+    local gameNameText = "Carregando..."
+    pcall(function()
+        gameNameText = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+    end)
+    if gameNameText == "Carregando..." or not gameNameText then gameNameText = game.Name end
+
+    local serverTypeText = "Público"
+    if game.PrivateServerId ~= "" then
+        serverTypeText = "Privado"
+    end
+
+    local jobIdText = game.JobId ~= "" and game.JobId or "N/A (Studio/Solo)"
+
+    local _, lblJogo = CreateStatusLabel("🎮 Nome do Jogo:", gameNameText, 1)
+    local _, lblServidor = CreateStatusLabel("📛 Nome do Servidor:", gameNameText .. " [" .. serverTypeText .. "]", 2)
+    local _, lblCodigo = CreateStatusLabel("🔑 Código do Servidor:", jobIdText, 3)
+    local _, lblPlayers = CreateStatusLabel("👥 Jogadores:", #Players:GetPlayers() .. " / " .. Players.MaxPlayers, 4)
+    local _, lblLua = CreateStatusLabel("🌙 Estado da Lua:", "", 5)
+
+    task.spawn(function()
+        while States.currentTab == "status" and MainFrame.Visible do
+            local clock = Lighting.ClockTime
+            local moonState = "Oculta ☀️ (Dia)"
+            if clock >= 18 or clock <= 6 then
+                moonState = "Visível 🌙 (Noite)"
+            end
+            
+            pcall(function()
+                lblLua.Text = moonState
+                lblPlayers.Text = #Players:GetPlayers() .. " / " .. Players.MaxPlayers
+            end)
+            task.wait(1)
+        end
     end)
 end
 
@@ -1272,11 +1355,12 @@ for _, tab in ipairs(Tabs) do
         elseif tab.id == "visual" then LoadVisualTab()
         elseif tab.id == "criacao" then LoadCriacaoTab()
         elseif tab.id == "config" then LoadConfigTab()
+        elseif tab.id == "status" then LoadStatusTab()
         end
     end)
 end
 
--- ==================== ABRIR/FECHAR MENU ====================
+-- ==================== MENU ABRIR/FECHAR ====================
 local function OpenMenu()
     States.menuOpen = true
     MainFrame.Visible = true
@@ -1412,8 +1496,8 @@ task.spawn(function()
     tweenOut.Completed:Connect(function() notif:Destroy() end)
 end)
 
-print("═══════════════════════════════════════")
-print("  🛡️ Admin Hub v1.0 Fix Carregado!")
-print("  Clique no ícone ADM para abrir")
-print("  Duplo clique fora para fechar")
-print("═══════════════════════════════════════")
+print("══════════════════════════════════════════")
+print(" 🛡️ Admin Hub v1.0 Carregado com Sucesso!")
+print("Clique no botão flutuante 'ADM' para abrir")
+print("Dê um duplo clique fora do menu para fechar")
+print("══════════════════════════════════════════")
